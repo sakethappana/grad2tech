@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grad2Tech</title>
+  <meta name="description" content="Grad2Tech offers live, trainer-led Full Stack Development training with daily assignments, weekly assessments and a conditional placement commitment for eligible candidates.">
+  <meta name="theme-color" content="#0B1220">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    document.documentElement.classList.add('js');
+    // If script.js never initialises, show all content instead of leaving it hidden.
+    setTimeout(function () { if (!window.G2T_READY) document.documentElement.classList.remove('js'); }, 3000);
+  </script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- Icon sprite (decorative) -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-user-check" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.2 3.5a.5.5 0 0 0 .8-.4V7.9a.5.5 0 0 0-.8-.4L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-cycle" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+    <symbol id="i-refund" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-x-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M14.1 5.55a2 2 0 0 0 1.8 0l3.65-1.83A1 1 0 0 1 21 4.62v12.76a1 1 0 0 1-.55.9l-4.55 2.27a2 2 0 0 1-1.8 0l-4.2-2.1a2 2 0 0 0-1.8 0l-3.65 1.83A1 1 0 0 1 3 19.38V6.62a1 1 0 0 1 .55-.9l4.55-2.27a2 2 0 0 1 1.8 0z"/><path d="M15 5.76v15"/><path d="M9 3.24v15"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0v1"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="site-header">
+  <div class="container header__inner">
+    <a class="wordmark" href="#top" aria-label="Grad2Tech — back to top">
+      <svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8"/><path d="M8 21.5 13.5 16l3.5 3.5L24 12.5M19 12.5h5v5"/></svg>
+      <span class="wordmark__text">Grad<span>2</span>Tech</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list" id="nav-list">
+        <li><a href="#program">Program</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#mentorship">Mentorship</a></li>
+        <li><a href="#placement">Placement Commitment</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+        <li class="nav__cta-mobile"><button class="btn btn--primary btn--block" type="button" data-open="apply-modal">Apply for Selection</button></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <button class="btn btn--primary btn--sm header__cta" type="button" data-open="apply-modal">Apply for Selection</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list" aria-label="Open menu">
+        <svg class="icon icon--menu" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon icon--close" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow hero-in" style="--d:0">Live online · Full Stack Development</p>
+      <h1 class="hero__title hero-in" id="hero-title" style="--d:1">From graduation to your first <span class="accent-underline">tech role.</span></h1>
+      <p class="hero__lead hero-in" style="--d:2">
+        Grad2Tech selects candidates through a trainer-led interview, then teaches Full Stack Development in live online classes.
+        You practise every day, are assessed every week, and prepare for placement interviews with trainers who know the work.
+      </p>
+
+      <div class="hero__actions hero-in" style="--d:3">
+        <button class="btn btn--primary btn--lg" type="button" data-open="apply-modal">
+          Apply for Selection
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </button>
+        <a class="btn btn--ghost btn--lg" href="#program">Explore the Program</a>
+      </div>
+
+      <ul class="trust hero-in" style="--d:4" aria-label="Program highlights">
+        <li><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>10+ years of trainer experience</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-question"/></svg>Live doubt clarification</li>
+        <li><svg class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg>Daily assignments · Weekly assessments</li>
+      </ul>
+
+      <div class="hero__commitment hero-in" style="--d:5">
+        <svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>
+        <div>
+          <p class="hero__commitment-title">100% placement commitment for eligible candidates.</p>
+          <p class="hero__commitment-text">
+            Eligibility depends on completing the required assignments, assessments and participation requirements, and attending placement interviews.
+            <a href="#placement">Read how the commitment works</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero visual: sample learner dashboard -->
+    <figure class="dash hero-in" style="--d:3" aria-labelledby="dash-caption">
+      <div class="dash__frame" role="img" aria-label="Illustration of a sample learner dashboard. The roadmap runs Selection, Live Learning, Practice, Assessments, Interviews, with a sample daily assignment and sample weekly assessment results.">
+        <div class="dash__top">
+          <div>
+            <span class="dash__kicker">My learning path</span>
+            <span class="dash__program">Full Stack Development</span>
+          </div>
+          <span class="tag tag--sample">Sample learner view</span>
+        </div>
+
+        <div class="roadmap">
+          <div class="roadmap__track"><span class="roadmap__fill"></span><span class="roadmap__pulse"></span></div>
+          <ol class="roadmap__steps">
+            <li class="is-done"><span class="roadmap__node"><svg><use href="#i-check"/></svg></span><span class="roadmap__label">Selection</span><span class="roadmap__meta">Interview cleared</span></li>
+            <li class="is-done"><span class="roadmap__node"><svg><use href="#i-check"/></svg></span><span class="roadmap__label">Live Learning</span><span class="roadmap__meta">Module 4 of 7</span></li>
+            <li class="is-current"><span class="roadmap__node"><svg><use href="#i-code"/></svg></span><span class="roadmap__label">Practice</span><span class="roadmap__meta">Due today</span></li>
+            <li><span class="roadmap__node"><svg><use href="#i-chart"/></svg></span><span class="roadmap__label">Assessments</span><span class="roadmap__meta">Every week</span></li>
+            <li><span class="roadmap__node"><svg><use href="#i-briefcase"/></svg></span><span class="roadmap__label">Interviews</span><span class="roadmap__meta">When eligible</span></li>
+          </ol>
+        </div>
+
+        <div class="dash__grid">
+          <div class="dcard">
+            <div class="dcard__head">
+              <span class="dcard__icon"><svg><use href="#i-clipboard"/></svg></span>
+              <span>Today’s assignment</span>
+              <span class="pill pill--teal">Due today</span>
+            </div>
+            <p class="dcard__title">Build a REST endpoint for a task list</p>
+            <ul class="mini-check">
+              <li class="is-done"><svg><use href="#i-check"/></svg>Define the routes</li>
+              <li class="is-done"><svg><use href="#i-check"/></svg>Validate the request body</li>
+              <li><svg><use href="#i-check"/></svg>Write two tests</li>
+            </ul>
+            <div class="meter"><span style="--w:66%"></span></div>
+            <span class="dcard__foot">2 of 3 steps</span>
+          </div>
+
+          <div class="dcard">
+            <div class="dcard__head">
+              <span class="dcard__icon"><svg><use href="#i-chart"/></svg></span>
+              <span>Weekly assessments</span>
+            </div>
+            <div class="spark">
+              <span style="--h:42%"><i>W1</i></span>
+              <span style="--h:55%"><i>W2</i></span>
+              <span style="--h:51%"><i>W3</i></span>
+              <span style="--h:68%"><i>W4</i></span>
+              <span style="--h:74%"><i>W5</i></span>
+              <span class="is-next" style="--h:100%"><i>W6</i></span>
+            </div>
+            <span class="dcard__foot">Week 6 · Backend &amp; APIs — scheduled</span>
+          </div>
+        </div>
+
+        <div class="dash__live">
+          <span class="live-dot"></span>
+          <span class="dash__live-text"><strong>Next live class</strong> Middleware &amp; error handling</span>
+          <span class="dash__live-btn"><svg><use href="#i-hand"/></svg>Ask a doubt</span>
+        </div>
+      </div>
+      <figcaption id="dash-caption" class="dash__caption">Illustrative sample learner view — not real learner data.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="section section--white why" id="why" aria-labelledby="why-title">
+  <div class="container why__grid">
+    <div class="why__intro reveal">
+      <p class="eyebrow">Why Grad2Tech</p>
+      <h2 class="section-title" id="why-title">Learning that happens <em>with</em> people, not just in front of a screen.</h2>
+      <p class="section-lead">The program is built around four habits that move a graduate from knowing about code to writing it confidently.</p>
+    </div>
+
+    <div class="why__feature reveal">
+      <span class="why__num" aria-hidden="true">01</span>
+      <div class="why__big" aria-hidden="true">10<span>+</span></div>
+      <div>
+        <h3>Learn directly from experienced trainers.</h3>
+        <p>Your trainers bring more than ten years of experience across industry work and training. They explain how things are actually built — the trade-offs, the habits and the mistakes worth avoiding.</p>
+      </div>
+    </div>
+
+    <ol class="why__list" start="2">
+      <li class="reveal">
+        <span class="why__num" aria-hidden="true">02</span>
+        <span class="why__icon" aria-hidden="true"><svg><use href="#i-question"/></svg></span>
+        <div>
+          <h3>Ask questions while the class is happening.</h3>
+          <p>Classes are live, so a doubt gets cleared at the moment it appears — before it quietly turns into a gap.</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <span class="why__num" aria-hidden="true">03</span>
+        <span class="why__icon" aria-hidden="true"><svg><use href="#i-code"/></svg></span>
+        <div>
+          <h3>Build skills through daily implementation.</h3>
+          <p>Each day’s assignment turns the session into working code. Small, steady practice is what makes concepts stick.</p>
+        </div>
+      </li>
+      <li class="reveal">
+        <span class="why__num" aria-hidden="true">04</span>
+        <span class="why__icon" aria-hidden="true"><svg><use href="#i-trend"/></svg></span>
+        <div>
+          <h3>Track improvement through weekly assessments.</h3>
+          <p>A weekly check shows you and your trainers what is solid and what needs another look — so progress is visible, not guessed.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PROGRAM ============ -->
+<section class="section section--dark program" id="program" aria-labelledby="program-title">
+  <div class="container">
+    <div class="program__head reveal">
+      <p class="eyebrow eyebrow--light">The program</p>
+      <h2 class="section-title" id="program-title">Full Stack Development</h2>
+      <p class="section-lead">One focused program, taught live from the first line of HTML to a deployed application — with interview preparation built in.</p>
+    </div>
+
+    <div class="program__grid">
+      <div class="program__facts reveal">
+        <dl class="facts">
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg>Who it’s for</dt>
+            <dd>Graduates and aspiring developers, subject to selection through a trainer-led interview.</dd>
+          </div>
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-video"/></svg>Format</dt>
+            <dd>Live online classes led by trainers, with doubts cleared during the session.</dd>
+          </div>
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Approach</dt>
+            <dd>Hands-on development — you build alongside every concept.</dd>
+          </div>
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-clipboard"/></svg>Practice</dt>
+            <dd>Daily assignments that must be completed consistently.</dd>
+          </div>
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg>Assessment</dt>
+            <dd>Weekly assessments to measure understanding and progress.</dd>
+          </div>
+          <div class="facts__row">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-briefcase"/></svg>Career</dt>
+            <dd>Interview preparation, plus a placement commitment for <a href="#placement">eligible candidates</a>.</dd>
+          </div>
+          <div class="facts__row facts__row--muted">
+            <dt><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>Fees, duration &amp; batches</dt>
+            <dd>To be confirmed. <button class="link-btn" type="button" data-open="enquiry-modal" data-topic="Program details">Discuss program details</button></dd>
+          </div>
+        </dl>
+
+        <div class="program__actions">
+          <button class="btn btn--primary" type="button" data-open="apply-modal">Apply for Selection</button>
+          <button class="btn btn--outline-light" type="button" id="roadmap-toggle" aria-expanded="false" aria-controls="roadmap-panel">
+            <svg class="icon" aria-hidden="true"><use href="#i-map"/></svg>
+            <span>View Learning Roadmap</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="program__curriculum reveal">
+        <div class="curriculum__head">
+          <h3>Curriculum modules</h3>
+          <span class="tag tag--dark">Illustrative curriculum</span>
+        </div>
+        <p class="curriculum__note">Shown for this demo. The final syllabus and technology stack will be confirmed with the program details.</p>
+
+        <div class="accordion accordion--dark" data-accordion>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-1" id="mod-1-btn">
+                <span class="acc-index">01</span><span class="acc-label">Web foundations: HTML, CSS, responsive design</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-1" role="region" aria-labelledby="mod-1-btn">
+              <div class="acc-body">
+                <p>Semantic HTML, the CSS box model, Flexbox and Grid layouts, responsive design for different screen sizes, and accessibility basics.</p>
+                <p class="acc-practice"><strong>Practice:</strong> build and refine responsive page layouts from a written brief.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-2" id="mod-2-btn">
+                <span class="acc-index">02</span><span class="acc-label">JavaScript fundamentals</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-2" role="region" aria-labelledby="mod-2-btn">
+              <div class="acc-body">
+                <p>Variables, data types, functions, arrays and objects, working with the DOM and events, and asynchronous code with promises.</p>
+                <p class="acc-practice"><strong>Practice:</strong> add real interactivity to the pages you have already built.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-3" id="mod-3-btn">
+                <span class="acc-index">03</span><span class="acc-label">Frontend development</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-3" role="region" aria-labelledby="mod-3-btn">
+              <div class="acc-body">
+                <p>Component-based thinking, managing state, handling forms, routing between views and consuming data from APIs.</p>
+                <p class="acc-practice"><strong>Practice:</strong> build a multi-view interface that reads and updates live data.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-4" id="mod-4-btn">
+                <span class="acc-index">04</span><span class="acc-label">Backend development and APIs</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-4" role="region" aria-labelledby="mod-4-btn">
+              <div class="acc-body">
+                <p>Server-side programming, designing REST APIs, routing and middleware, validation, error handling and authentication concepts.</p>
+                <p class="acc-practice"><strong>Practice:</strong> design and build an API that your frontend can use.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-5" id="mod-5-btn">
+                <span class="acc-index">05</span><span class="acc-label">Databases</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-5" role="region" aria-labelledby="mod-5-btn">
+              <div class="acc-body">
+                <p>Data modelling, writing queries, relationships between records, and connecting a database to your backend safely.</p>
+                <p class="acc-practice"><strong>Practice:</strong> persist your application’s data and query it efficiently.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-6" id="mod-6-btn">
+                <span class="acc-index">06</span><span class="acc-label">Git, testing, and deployment</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-6" role="region" aria-labelledby="mod-6-btn">
+              <div class="acc-body">
+                <p>Version control with Git, branching and collaborative workflows, writing tests, and deploying an application so others can use it.</p>
+                <p class="acc-practice"><strong>Practice:</strong> work through a pull-request workflow and ship a tested build.</p>
+              </div>
+            </div>
+          </div>
+          <div class="acc-item">
+            <h4 class="acc-heading">
+              <button class="acc-trigger" type="button" aria-expanded="false" aria-controls="mod-7" id="mod-7-btn">
+                <span class="acc-index">07</span><span class="acc-label">Capstone development and interview preparation</span>
+                <svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg>
+              </button>
+            </h4>
+            <div class="acc-panel" id="mod-7" role="region" aria-labelledby="mod-7-btn">
+              <div class="acc-body">
+                <p>An end-to-end capstone application, code reviews, technical interview practice, and resume and interview guidance.</p>
+                <p class="acc-practice"><strong>Practice:</strong> present your capstone and talk through your decisions as you would in an interview.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expandable learning roadmap -->
+    <div class="roadmap-panel" id="roadmap-panel">
+      <div class="roadmap-panel__inner">
+        <div class="roadmap-panel__head">
+          <h3>Learning roadmap</h3>
+          <span class="tag tag--dark">Illustrative</span>
+        </div>
+        <ol class="phases">
+          <li class="phase">
+            <span class="phase__step">Phase 1</span>
+            <h4>Foundations</h4>
+            <p>Modules 01–02. HTML, CSS and core JavaScript, practised daily.</p>
+          </li>
+          <li class="phase">
+            <span class="phase__step">Phase 2</span>
+            <h4>Building interfaces</h4>
+            <p>Module 03. Frontend applications that talk to real data.</p>
+          </li>
+          <li class="phase">
+            <span class="phase__step">Phase 3</span>
+            <h4>Server &amp; data</h4>
+            <p>Modules 04–05. APIs, backend logic and databases.</p>
+          </li>
+          <li class="phase">
+            <span class="phase__step">Phase 4</span>
+            <h4>Professional practice</h4>
+            <p>Modules 06–07. Git, testing, deployment, capstone and interview preparation.</p>
+          </li>
+          <li class="phase phase--end">
+            <span class="phase__step">Then</span>
+            <h4>Placement interviews</h4>
+            <p>For candidates who meet the program’s requirements.</p>
+          </li>
+        </ol>
+        <p class="roadmap-panel__foot">
+          <svg class="icon" aria-hidden="true"><use href="#i-cycle"/></svg>
+          Every phase runs on the same rhythm: live classes, daily assignments, a weekly assessment and trainer feedback.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section section--light journey" id="how-it-works" aria-labelledby="journey-title">
+  <div class="container journey__grid">
+    <div class="journey__intro reveal">
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title" id="journey-title">Six steps from interest to interviews.</h2>
+      <p class="section-lead">Admission is decided by a trainer-led interview. Submitting your interest starts the conversation — it does not guarantee a place.</p>
+      <button class="btn btn--primary" type="button" data-open="apply-modal">Apply for Selection</button>
+    </div>
+
+    <ol class="timeline">
+      <li class="timeline__item reveal">
+        <span class="timeline__num">1</span>
+        <div class="timeline__body">
+          <h3>Submit your interest</h3>
+          <p>Tell us about your education, background and what you want from a career in tech.</p>
+        </div>
+      </li>
+      <li class="timeline__item timeline__item--key reveal">
+        <span class="timeline__num">2</span>
+        <div class="timeline__body">
+          <span class="tag tag--teal">Selection step</span>
+          <h3>Attend a trainer-led interview</h3>
+          <p>A trainer talks with you to understand your foundations, motivation and readiness for an intensive, practice-heavy program. <strong>Admission depends on this interview.</strong></p>
+        </div>
+      </li>
+      <li class="timeline__item reveal">
+        <span class="timeline__num">3</span>
+        <div class="timeline__body">
+          <h3>Receive the selection decision</h3>
+          <p>You hear back on whether you have been selected to join the program.</p>
+        </div>
+      </li>
+      <li class="timeline__item reveal">
+        <span class="timeline__num">4</span>
+        <div class="timeline__body">
+          <h3>Join the live learning program</h3>
+          <p>Attend live online classes, ask questions as you go and work alongside your trainers.</p>
+        </div>
+      </li>
+      <li class="timeline__item reveal">
+        <span class="timeline__num">5</span>
+        <div class="timeline__body">
+          <h3>Complete practice and assessments</h3>
+          <p>Submit daily assignments and take part in weekly assessments — both count towards placement eligibility.</p>
+        </div>
+      </li>
+      <li class="timeline__item reveal">
+        <span class="timeline__num">6</span>
+        <div class="timeline__body">
+          <h3>Participate in placement interviews</h3>
+          <p>Eligible candidates are prepared for and attend placement interviews arranged through the program.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ LIVE LEARNING ============ -->
+<section class="section section--dark live" id="live-learning" aria-labelledby="live-title">
+  <div class="container live__grid">
+    <div class="live__copy reveal">
+      <p class="eyebrow eyebrow--light">The live learning experience</p>
+      <h2 class="section-title live__title" id="live-title">Ask. Understand. Build. Repeat.</h2>
+      <p class="section-lead">Every class is taught live by a trainer. You see the reasoning, not just the result — and you can interrupt it with a question.</p>
+      <ul class="live__points">
+        <li>
+          <span class="live__icon" aria-hidden="true"><svg><use href="#i-message"/></svg></span>
+          <div><h3>Live interaction</h3><p>Raise a doubt during the session and get it clarified while the topic is still on screen.</p></div>
+        </li>
+        <li>
+          <span class="live__icon" aria-hidden="true"><svg><use href="#i-bulb"/></svg></span>
+          <div><h3>Practical explanation</h3><p>Concepts are explained through real code and the reasons behind each decision.</p></div>
+        </li>
+        <li>
+          <span class="live__icon" aria-hidden="true"><svg><use href="#i-cycle"/></svg></span>
+          <div><h3>Regular feedback</h3><p>Daily assignments and weekly assessments give you a steady signal on where you stand.</p></div>
+        </li>
+      </ul>
+    </div>
+
+    <figure class="classroom reveal" aria-labelledby="classroom-caption">
+      <div class="classroom__frame" role="img" aria-label="Illustration of a live classroom interface with an instructor tile, the topic Building REST APIs, a question panel, a daily assignment preview and a weekly assessment indicator.">
+        <div class="classroom__bar">
+          <span class="pill pill--live"><span class="live-dot"></span>Live</span>
+          <span class="classroom__topic">Module 04 · Building REST APIs</span>
+          <span class="tag tag--sample tag--on-dark">Illustration</span>
+        </div>
+
+        <div class="classroom__body">
+          <div class="classroom__stage">
+            <div class="classroom__screen">
+              <div class="code">
+                <span><b class="c-k">app</b>.<b class="c-f">get</b>(<b class="c-s">'/tasks'</b>, <b class="c-k">async</b> (req, res) =&gt; {</span>
+                <span class="i1"><b class="c-k">const</b> tasks = <b class="c-k">await</b> db.<b class="c-f">find</b>();</span>
+                <span class="i1">res.<b class="c-f">json</b>(tasks);</span>
+                <span>});</span>
+                <span class="c-c">// Why async here? — see question 2</span>
+              </div>
+            </div>
+            <div class="classroom__instructor">
+              <span class="avatar avatar--trainer"><svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="7"/><path d="M6 38c1.5-8 7-12 14-12s12.5 4 14 12"/></svg></span>
+              <div>
+                <span class="classroom__name">Trainer</span>
+                <span class="classroom__status"><svg><use href="#i-mic"/></svg>Explaining async handlers</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="classroom__questions">
+            <span class="classroom__label"><svg><use href="#i-question"/></svg>Questions</span>
+            <div class="q q--answered">
+              <span class="q__who">Learner</span>
+              <p>When should I use PUT instead of PATCH?</p>
+              <span class="q__state"><svg><use href="#i-check"/></svg>Answered live</span>
+            </div>
+            <div class="q q--active">
+              <span class="q__who">Learner</span>
+              <p>Why does the handler need to be async?</p>
+              <span class="q__state q__state--now">Being answered</span>
+            </div>
+            <div class="q__input"><span>Type your question…</span><svg><use href="#i-send"/></svg></div>
+          </aside>
+        </div>
+
+        <div class="classroom__foot">
+          <div class="classroom__card">
+            <span class="classroom__label"><svg><use href="#i-clipboard"/></svg>Daily assignment</span>
+            <p>Add a <code>POST /tasks</code> route with input validation.</p>
+          </div>
+          <div class="classroom__card">
+            <span class="classroom__label"><svg><use href="#i-chart"/></svg>Weekly assessment</span>
+            <div class="week-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="next"></i></div>
+            <p>Scheduled at the end of this week</p>
+          </div>
+        </div>
+      </div>
+      <figcaption id="classroom-caption" class="figure-caption figure-caption--dark">Illustration of the live classroom concept — not a real session.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ MENTORSHIP ============ -->
+<section class="section section--white mentor" id="mentorship" aria-labelledby="mentor-title">
+  <div class="container mentor__grid">
+    <div class="mentor__copy reveal">
+      <p class="eyebrow">Mentorship &amp; career guidance</p>
+      <h2 class="section-title" id="mentor-title">Guidance that doesn’t stop when the class ends.</h2>
+      <p class="section-lead">Trainers support you on the technical work and on the path towards your first role.</p>
+
+      <ul class="mentor__list">
+        <li><span class="mentor__icon" aria-hidden="true"><svg><use href="#i-question"/></svg></span><div><h3>Technical doubt clarification</h3><p>Work through concepts or bugs that are holding you back.</p></div></li>
+        <li><span class="mentor__icon" aria-hidden="true"><svg><use href="#i-code"/></svg></span><div><h3>Project feedback</h3><p>Hear what is working in your code and what to improve next.</p></div></li>
+        <li><span class="mentor__icon" aria-hidden="true"><svg><use href="#i-trend"/></svg></span><div><h3>Learning-progress discussions</h3><p>Look at your assignments and assessments together and plan the next step.</p></div></li>
+        <li><span class="mentor__icon" aria-hidden="true"><svg><use href="#i-file"/></svg></span><div><h3>Resume and interview guidance</h3><p>Present your skills and projects clearly, and practise for interviews.</p></div></li>
+      </ul>
+    </div>
+
+    <div class="guide-card reveal">
+      <div class="guide-card__top">
+        <span class="tag tag--outline">Proposed feature</span>
+        <span class="guide-card__kicker">Demo concept</span>
+      </div>
+      <div class="guide-card__profile">
+        <div class="guide-card__avatars" aria-hidden="true">
+          <span class="avatar avatar--lg"><svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="7"/><path d="M6 38c1.5-8 7-12 14-12s12.5 4 14 12"/></svg></span>
+          <span class="guide-card__link"></span>
+          <span class="avatar avatar--lg avatar--you"><svg viewBox="0 0 40 40"><circle cx="20" cy="15" r="7"/><path d="M6 38c1.5-8 7-12 14-12s12.5 4 14 12"/></svg></span>
+        </div>
+        <div class="guide-card__roles" aria-hidden="true"><span>Trainer</span><span>You</span></div>
+      </div>
+      <h3 class="guide-card__title">1-on-1 guidance</h3>
+      <p class="guide-card__text">A focused conversation with a trainer about your learning, your projects or your career direction.</p>
+      <ul class="chips" aria-label="Possible guidance topics">
+        <li>Career planning</li>
+        <li>Technical guidance</li>
+        <li>Project review</li>
+        <li>Interview preparation</li>
+      </ul>
+      <p class="guide-card__note">
+        <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+        <span>Availability and the number of included sessions will be confirmed with the program details.</span>
+      </p>
+      <button class="btn btn--primary btn--block" type="button" data-open="guidance-modal">Request a Guidance Session</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACCOUNTABILITY ============ -->
+<section class="section section--light account" id="accountability" aria-labelledby="account-title">
+  <div class="container">
+    <div class="account__head reveal">
+      <p class="eyebrow">Practice &amp; accountability</p>
+      <h2 class="section-title" id="account-title">Progress is a two-way commitment.</h2>
+      <p class="section-lead">The program works when both sides show up. Here is what each side agrees to.</p>
+    </div>
+
+    <div class="account__split">
+      <div class="commit commit--yours reveal">
+        <h3 class="commit__title"><span class="commit__badge">You</span>Your commitment</h3>
+        <ul class="commit__list">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Complete daily assignments.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Participate in weekly assessments.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Engage consistently with the program.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Attend scheduled placement interviews.</li>
+        </ul>
+      </div>
+      <div class="account__join" aria-hidden="true"><span>+</span></div>
+      <div class="commit commit--ours reveal">
+        <h3 class="commit__title"><span class="commit__badge">G2T</span>Our commitment</h3>
+        <ul class="commit__list">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Deliver live trainer-led classes.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Clarify doubts during sessions.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Review work and provide feedback.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Prepare eligible candidates for placement opportunities.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rhythm reveal">
+      <div class="rhythm__head">
+        <h3>A sample weekly rhythm</h3>
+        <span class="rhythm__note">Illustrative — class schedule to be confirmed with program details.</span>
+      </div>
+      <ol class="rhythm__steps">
+        <li><span class="rhythm__icon" aria-hidden="true"><svg><use href="#i-video"/></svg></span><strong>Live learning</strong><span>New concepts taught live, with questions welcome.</span></li>
+        <li><span class="rhythm__icon" aria-hidden="true"><svg><use href="#i-code"/></svg></span><strong>Practice</strong><span>Daily assignments put each lesson into code.</span></li>
+        <li><span class="rhythm__icon" aria-hidden="true"><svg><use href="#i-chart"/></svg></span><strong>Assessment</strong><span>A weekly check on what you have learned.</span></li>
+        <li><span class="rhythm__icon" aria-hidden="true"><svg><use href="#i-message"/></svg></span><strong>Feedback</strong><span>Review, correct course and start the next week stronger.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLACEMENT ============ -->
+<section class="section section--dark placement" id="placement" aria-labelledby="placement-title">
+  <div class="container">
+    <div class="placement__head reveal">
+      <p class="eyebrow eyebrow--light">Placement commitment</p>
+      <h2 class="section-title" id="placement-title">A placement commitment built on shared responsibility.</h2>
+      <p class="section-lead">We commit to placing every eligible candidate. Eligibility is earned through the work you put into the program — and the conditions are set out plainly below.</p>
+    </div>
+
+    <div class="policy-note reveal" role="note">
+      <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+      <p>Demo overview of the proposed placement and refund policy. Final written terms will be provided before enrolment.</p>
+    </div>
+
+    <div class="placement__grid">
+      <article class="pcard pcard--statement reveal">
+        <span class="pcard__step">What it means</span>
+        <p class="pcard__big">100% placement commitment for eligible candidates.</p>
+        <p>Candidates who meet every program requirement and attend their placement interviews are covered by the commitment. Grad2Tech prepares them for placement interviews and supports them towards a role. If an eligible candidate remains unplaced, the review process below applies.</p>
+      </article>
+
+      <article class="pcard pcard--eligibility reveal">
+        <span class="pcard__step">To remain eligible, you must</span>
+        <ul class="elig">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Complete the required daily assignments.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Complete the required weekly assessments.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Meet the program’s participation requirements.</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Attend the placement interviews arranged for you.</li>
+        </ul>
+        <p class="elig__not">
+          <svg class="icon" aria-hidden="true"><use href="#i-x-circle"/></svg>
+          <span>Candidates who do not meet these obligations are <strong>not covered</strong> by the placement commitment.</span>
+        </p>
+      </article>
+    </div>
+
+    <div class="refund reveal">
+      <div class="refund__head">
+        <span class="pcard__step">If an eligible candidate remains unplaced</span>
+        <h3>The proposed feedback and refund process</h3>
+      </div>
+      <ol class="refund__flow">
+        <li>
+          <span class="refund__icon" aria-hidden="true"><svg><use href="#i-search"/></svg></span>
+          <span class="refund__n">Step 1</span>
+          <h4>Company feedback is requested</h4>
+          <p>Grad2Tech asks the interviewing companies for feedback on the candidate’s interviews.</p>
+        </li>
+        <li>
+          <span class="refund__icon" aria-hidden="true"><svg><use href="#i-scale"/></svg></span>
+          <span class="refund__n">Step 2</span>
+          <h4>The reasons are reviewed together</h4>
+          <p>Grad2Tech and the candidate review the reasons given across those interviews.</p>
+        </li>
+        <li>
+          <span class="refund__icon" aria-hidden="true"><svg><use href="#i-refund"/></svg></span>
+          <span class="refund__n">Step 3</span>
+          <h4>Fees are refunded on mutual agreement</h4>
+          <p>Under the proposed policy, fees are refunded when Grad2Tech and the candidate mutually agree that the reasons provided are genuine.</p>
+        </li>
+      </ol>
+      <p class="refund__clarify">
+        <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+        <span>An unsuccessful interview does not automatically trigger a refund. The process applies only to eligible candidates who remain unplaced after taking part in their interviews.</span>
+      </p>
+    </div>
+
+    <div class="placement__cta reveal">
+      <p>Want to talk through the policy before applying?</p>
+      <button class="btn btn--outline-light" type="button" data-open="enquiry-modal" data-topic="Placement policy">Ask about the policy</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section section--light faq" id="faqs" aria-labelledby="faq-title">
+  <div class="container faq__grid">
+    <div class="faq__intro reveal">
+      <p class="eyebrow">FAQs</p>
+      <h2 class="section-title" id="faq-title">Questions, answered plainly.</h2>
+      <p class="section-lead">Can’t find what you’re looking for? Send us a question.</p>
+      <button class="btn btn--ghost" type="button" data-open="enquiry-modal">Ask a question</button>
+    </div>
+
+    <div class="accordion faq__list reveal" data-accordion>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-1" id="faq-1-btn"><span class="acc-label">What does Grad2Tech currently teach?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-1" role="region" aria-labelledby="faq-1-btn"><div class="acc-body"><p>Grad2Tech currently offers one program: Full Stack Development. It covers web foundations, JavaScript, frontend and backend development, databases, Git, testing and deployment, and finishes with capstone work and interview preparation. The curriculum on this site is illustrative; the final syllabus will be confirmed with the program details.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-2" id="faq-2-btn"><span class="acc-label">Are classes live?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-2" role="region" aria-labelledby="faq-2-btn"><div class="acc-body"><p>Yes. The core of the program is live, instructor-led teaching delivered online.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-3" id="faq-3-btn"><span class="acc-label">Can I ask questions during class?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-3" role="region" aria-labelledby="faq-3-btn"><div class="acc-body"><p>Yes. Because classes are live, you can ask questions and have your doubts clarified during the session.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-4" id="faq-4-btn"><span class="acc-label">How are candidates selected?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-4" role="region" aria-labelledby="faq-4-btn"><div class="acc-body"><p>You first submit your interest, then attend an interview conducted by our trainers. Admission depends on that interview — submitting an application does not guarantee a place.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-5" id="faq-5-btn"><span class="acc-label">Who conducts the training?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-5" role="region" aria-labelledby="faq-5-btn"><div class="acc-body"><p>Training is led by trainers with more than ten years of experience across industry work and training. The focus is on practical knowledge and direct interaction with candidates.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-6" id="faq-6-btn"><span class="acc-label">Are daily assignments compulsory?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-6" role="region" aria-labelledby="faq-6-btn"><div class="acc-body"><p>Yes. Candidates are expected to complete their assigned work consistently. Completing the required assignments is also one of the conditions for placement eligibility.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-7" id="faq-7-btn"><span class="acc-label">How do weekly assessments work?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-7" role="region" aria-labelledby="faq-7-btn"><div class="acc-body"><p>Each week there is an assessment to measure your understanding and progress. Candidates must participate and meet the program’s requirements. The exact format will be shared with the program details.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-8" id="faq-8-btn"><span class="acc-label">Who qualifies for the placement commitment?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-8" role="region" aria-labelledby="faq-8-btn"><div class="acc-body"><p>Candidates who complete the required assignments and assessments, meet the participation requirements and attend their placement interviews. See the <a href="#placement">placement commitment</a> section for the full overview.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-9" id="faq-9-btn"><span class="acc-label">What if I do not complete the required work?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-9" role="region" aria-labelledby="faq-9-btn"><div class="acc-body"><p>Candidates who do not meet the program’s obligations — including assignments, assessments, participation and attending placement interviews — are not covered by the placement commitment.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-10" id="faq-10-btn"><span class="acc-label">What happens if an eligible candidate remains unplaced?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-10" role="region" aria-labelledby="faq-10-btn"><div class="acc-body"><p>Grad2Tech will seek feedback from the companies that interviewed the candidate. Under the proposed policy, fees are refunded when Grad2Tech and the candidate mutually agree that the reasons provided across those interviews are genuine. An unsuccessful interview does not automatically lead to a refund. Final written terms will be provided before enrolment.</p></div></div>
+      </div>
+      <div class="acc-item">
+        <h3 class="acc-heading"><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-11" id="faq-11-btn"><span class="acc-label">How can I request career guidance?</span><svg class="acc-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></h3>
+        <div class="acc-panel" id="faq-11" role="region" aria-labelledby="faq-11-btn"><div class="acc-body"><p>Use the <button class="link-btn" type="button" data-open="guidance-modal">Request a Guidance Session</button> form and choose a topic. In this demo it is an enquiry, not a confirmed appointment; availability and included sessions will be confirmed with the program details.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta" id="apply" aria-labelledby="cta-title">
+  <div class="container cta__inner reveal">
+    <div>
+      <h2 class="cta__title" id="cta-title">Ready to take your first step into tech?</h2>
+      <p class="cta__text">Your journey begins with a trainer-led selection interview. Submit your interest, and if you are selected, you will join a live program built around daily practice and real feedback.</p>
+    </div>
+    <div class="cta__actions">
+      <button class="btn btn--primary btn--lg" type="button" data-open="apply-modal">
+        Apply for Selection
+        <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+      </button>
+      <span class="cta__fine">Applying does not guarantee admission.</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="wordmark wordmark--light" href="#top" aria-label="Grad2Tech — back to top">
+        <svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect width="32" height="32" rx="8"/><path d="M8 21.5 13.5 16l3.5 3.5L24 12.5M19 12.5h5v5"/></svg>
+        <span class="wordmark__text">Grad<span>2</span>Tech</span>
+      </a>
+      <p>Live, trainer-led Full Stack Development training with daily practice, weekly assessments and placement support for eligible candidates.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      <h2 class="footer__heading">Explore</h2>
+      <ul>
+        <li><a href="#program">Program</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#mentorship">Mentorship</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__nav">
+      <h2 class="footer__heading">Policy &amp; contact</h2>
+      <ul>
+        <li><a href="#placement">Proposed placement &amp; refund policy</a></li>
+        <li><button class="link-btn link-btn--footer" type="button" data-open="enquiry-modal">Send an enquiry</button></li>
+        <li><button class="link-btn link-btn--footer" type="button" data-open="apply-modal">Apply for Selection</button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span class="footer__demo"><span class="dot" aria-hidden="true"></span>Demonstration website</span>
+    <span>Program details, policy terms and curriculum shown here are illustrative and subject to confirmation.</span>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="Back to top">
+  <svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg>
+</button>
+
+<!-- ============ MODALS ============ -->
+<dialog class="modal" id="apply-modal" aria-labelledby="apply-title" aria-describedby="apply-desc">
+  <div class="modal__inner">
+    <div class="modal__head">
+      <div>
+        <p class="eyebrow">Selection application</p>
+        <h2 class="modal__title" id="apply-title">Apply for Selection</h2>
+      </div>
+      <button class="modal__close" type="button" data-close aria-label="Close dialog"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="modal__content" data-form-view>
+      <p class="modal__desc" id="apply-desc">Share a few details to request a trainer-led selection interview. <strong>This is a demo form — nothing is sent or saved.</strong></p>
+
+      <form class="form" id="apply-form" novalidate>
+        <div class="form__row">
+          <div class="field">
+            <label for="ap-name">Full name</label>
+            <input id="ap-name" name="name" type="text" autocomplete="name" required aria-describedby="ap-name-err">
+            <p class="field__error" id="ap-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="ap-email">Email</label>
+            <input id="ap-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="ap-email-err">
+            <p class="field__error" id="ap-email-err"></p>
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field">
+            <label for="ap-phone">Phone</label>
+            <input id="ap-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="ap-phone-hint ap-phone-err">
+            <p class="field__hint" id="ap-phone-hint">Include your country code if outside your home country.</p>
+            <p class="field__error" id="ap-phone-err"></p>
+          </div>
+          <div class="field">
+            <label for="ap-year">Graduation year</label>
+            <select id="ap-year" name="year" required aria-describedby="ap-year-err">
+              <option value="">Select a year</option>
+            </select>
+            <p class="field__error" id="ap-year-err"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="ap-bg">Current background</label>
+          <select id="ap-bg" name="background" required aria-describedby="ap-bg-err">
+            <option value="">Select the closest option</option>
+            <option>Final-year student</option>
+            <option>Recent graduate</option>
+            <option>Graduate working outside tech</option>
+            <option>Working in tech, moving into development</option>
+            <option>Other</option>
+          </select>
+          <p class="field__error" id="ap-bg-err"></p>
+        </div>
+        <div class="field">
+          <label for="ap-goal">Short career goal</label>
+          <textarea id="ap-goal" name="goal" rows="3" maxlength="300" required aria-describedby="ap-goal-hint ap-goal-err"></textarea>
+          <p class="field__hint" id="ap-goal-hint"><span data-count="ap-goal">0</span>/300 characters</p>
+          <p class="field__error" id="ap-goal-err"></p>
+        </div>
+        <div class="field field--check">
+          <input id="ap-ack" name="ack" type="checkbox" required aria-describedby="ap-ack-err">
+          <label for="ap-ack">I understand that admission requires a trainer-led selection interview, and that applying does not guarantee a place.</label>
+          <p class="field__error" id="ap-ack-err"></p>
+        </div>
+        <p class="form__summary" role="alert" aria-live="assertive"></p>
+        <div class="form__actions">
+          <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn--primary" type="submit">Submit application</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal__success" data-success-view hidden tabindex="-1">
+      <span class="success__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+      <h3>Demo application completed.</h3>
+      <p>No information has been sent or saved.</p>
+      <p class="success__sub">In the live service, the next step would be an invitation to a trainer-led selection interview.</p>
+      <button class="btn btn--primary" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="guidance-modal" aria-labelledby="guidance-title" aria-describedby="guidance-desc">
+  <div class="modal__inner">
+    <div class="modal__head">
+      <div>
+        <p class="eyebrow">Proposed 1-on-1 guidance</p>
+        <h2 class="modal__title" id="guidance-title">Request a Guidance Session</h2>
+      </div>
+      <button class="modal__close" type="button" data-close aria-label="Close dialog"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="modal__content" data-form-view>
+      <p class="modal__desc notice" id="guidance-desc">
+        <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+        <span>This is a <strong>demo enquiry, not a confirmed appointment</strong>. No session is booked and nothing is sent or saved.</span>
+      </p>
+      <form class="form" id="guidance-form" novalidate>
+        <fieldset class="field options" aria-describedby="gd-topic-err">
+          <legend>What would you like guidance on?</legend>
+          <div class="options__grid">
+            <label class="option"><input type="radio" name="topic" value="Career planning" required><span><svg class="icon" aria-hidden="true"><use href="#i-compass"/></svg>Career planning</span></label>
+            <label class="option"><input type="radio" name="topic" value="Technical guidance"><span><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Technical guidance</span></label>
+            <label class="option"><input type="radio" name="topic" value="Project review"><span><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>Project review</span></label>
+            <label class="option"><input type="radio" name="topic" value="Interview preparation"><span><svg class="icon" aria-hidden="true"><use href="#i-briefcase"/></svg>Interview preparation</span></label>
+          </div>
+          <p class="field__error" id="gd-topic-err"></p>
+        </fieldset>
+        <div class="field">
+          <label for="gd-note">Anything we should know? <span class="optional">(optional)</span></label>
+          <textarea id="gd-note" name="note" rows="3" maxlength="300"></textarea>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn--primary" type="submit">Send demo enquiry</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal__success" data-success-view hidden tabindex="-1">
+      <span class="success__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+      <h3>Demo enquiry completed.</h3>
+      <p>Topic: <strong data-topic-echo>—</strong></p>
+      <p class="success__sub">This is not a confirmed appointment. No information has been sent or saved.</p>
+      <button class="btn btn--primary" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="enquiry-modal" aria-labelledby="enquiry-title" aria-describedby="enquiry-desc">
+  <div class="modal__inner">
+    <div class="modal__head">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 class="modal__title" id="enquiry-title">Send an enquiry</h2>
+      </div>
+      <button class="modal__close" type="button" data-close aria-label="Close dialog"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="modal__content" data-form-view>
+      <p class="modal__desc" id="enquiry-desc">Ask about program details, fees, schedules or the placement policy. <strong>This is a demo form — nothing is sent or saved.</strong></p>
+      <form class="form" id="enquiry-form" novalidate>
+        <div class="form__row">
+          <div class="field">
+            <label for="eq-name">Name</label>
+            <input id="eq-name" name="name" type="text" autocomplete="name" required aria-describedby="eq-name-err">
+            <p class="field__error" id="eq-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="eq-email">Email</label>
+            <input id="eq-email" name="email" type="email" autocomplete="email" required aria-describedby="eq-email-err">
+            <p class="field__error" id="eq-email-err"></p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="eq-topic">Topic</label>
+          <select id="eq-topic" name="topic">
+            <option>Program details</option>
+            <option>Fees, duration &amp; batches</option>
+            <option>Placement policy</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="eq-msg">Your question</label>
+          <textarea id="eq-msg" name="message" rows="4" maxlength="500" required aria-describedby="eq-msg-err"></textarea>
+          <p class="field__error" id="eq-msg-err"></p>
+        </div>
+        <div class="form__actions">
+          <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn--primary" type="submit">Send demo enquiry</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal__success" data-success-view hidden tabindex="-1">
+      <span class="success__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+      <h3>Demo enquiry completed.</h3>
+      <p>No information has been sent or saved.</p>
+      <button class="btn btn--primary" type="button" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
+</body>
+</html>
