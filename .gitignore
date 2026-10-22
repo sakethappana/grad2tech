@@ -14,3 +14,4 @@ src/generated/
 next-env.d.ts
 .DS_Store
 Thumbs.db
+public/monaco/

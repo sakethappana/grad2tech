@@ -339,7 +339,9 @@ body::before {
 }
 .nav__list a:hover, .nav__list a.is-active { color: var(--navy); }
 .nav__list a:hover::after, .nav__list a.is-active::after { transform: scaleX(1); }
-.nav__cta-mobile { display: none; }
+.nav__cta-mobile, .nav__portal-mobile { display: none; }
+.header__portal .icon { width: 16px; height: 16px; color: var(--teal-ink); }
+.header__portal:hover .icon { transform: none; }
 
 .header__actions { display: flex; align-items: center; gap: 10px; }
 .nav-toggle {
@@ -1424,6 +1426,10 @@ body::before {
 /* =========================================================
    Responsive
    ========================================================= */
+@media (max-width: 1180px) {
+  .header__portal .icon { display: none; }
+}
+
 @media (max-width: 1100px) {
   .nav__list a { padding: 10px 9px; font-size: 0.88rem; }
   .nav__list a::after { left: 9px; right: 9px; }
@@ -1469,6 +1475,9 @@ body::before {
   .js .nav__list a::after { display: none; }
   .js .nav__list a.is-active { color: var(--teal-ink); }
   .js .nav__cta-mobile { display: block; margin-top: 20px; }
+  .js .nav__portal-mobile { display: block; }
+  .js .nav__portal-mobile a { color: var(--teal-ink); font-weight: 800; }
+  .js .header__portal { display: none; }
   .site-header.menu-open { background: var(--white); border-color: var(--line); }
 
   .hero__grid, .program__grid, .journey__grid, .live__grid, .mentor__grid, .faq__grid, .cta__inner { grid-template-columns: 1fr; }

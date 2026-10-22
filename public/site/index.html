@@ -6,17 +6,17 @@
   <title>Grad2Tech</title>
   <meta name="description" content="Grad2Tech offers live, trainer-led Full Stack Development training with daily assignments, weekly assessments and a conditional placement commitment for eligible candidates.">
   <meta name="theme-color" content="#0B1220">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/site/assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/site/styles.css">
   <script>
     document.documentElement.classList.add('js');
     // If script.js never initialises, show all content instead of leaving it hidden.
     setTimeout(function () { if (!window.G2T_READY) document.documentElement.classList.remove('js'); }, 3000);
   </script>
-  <script src="script.js" defer></script>
+  <script src="/site/script.js" defer></script>
 </head>
 <body>
 
@@ -76,11 +76,16 @@
         <li><a href="#mentorship">Mentorship</a></li>
         <li><a href="#placement">Placement Commitment</a></li>
         <li><a href="#faqs">FAQs</a></li>
+        <li class="nav__portal-mobile"><a href="/portal">Learning Portal</a></li>
         <li class="nav__cta-mobile"><button class="btn btn--primary btn--block" type="button" data-open="apply-modal">Apply for Selection</button></li>
       </ul>
     </nav>
 
     <div class="header__actions">
+      <a class="btn btn--ghost btn--sm header__portal" href="/portal">
+        <svg class="icon" aria-hidden="true"><use href="#i-user-check"/></svg>
+        Learning Portal
+      </a>
       <button class="btn btn--primary btn--sm header__cta" type="button" data-open="apply-modal">Apply for Selection</button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-list" aria-label="Open menu">
         <svg class="icon icon--menu" aria-hidden="true"><use href="#i-menu"/></svg>
@@ -851,6 +856,7 @@
         <li><a href="#how-it-works">How It Works</a></li>
         <li><a href="#mentorship">Mentorship</a></li>
         <li><a href="#faqs">FAQs</a></li>
+        <li><a href="/portal">Learning Portal</a></li>
       </ul>
     </nav>
 
