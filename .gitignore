@@ -1,4 +1,16 @@
-.netlify/
 node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.local
+.env.*.local
+.data/
+storage/
+src/generated/
+*.tsbuildinfo
+next-env.d.ts
 .DS_Store
 Thumbs.db

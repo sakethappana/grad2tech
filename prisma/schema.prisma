@@ -1,0 +1,1064 @@
+// Grad2Tech platform schema.
+// All timestamps are stored in UTC (timestamptz); the UI renders them in Asia/Kolkata by default.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─────────────────────────────────────────────────────────────
+// Users & authentication (tables used by Better Auth)
+// ─────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  STUDENT
+}
+
+model User {
+  id              String    @id
+  name            String
+  email           String    @unique
+  emailVerified   Boolean   @default(false)
+  image           String?
+  /// Set only by server code (invitations, setup script). Never accepted from clients.
+  role            Role      @default(STUDENT)
+  /// Suspension blocks portal access without deleting academic history.
+  suspendedAt     DateTime? @db.Timestamptz(3)
+  suspendedReason String?
+  createdAt       DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime  @updatedAt @db.Timestamptz(3)
+
+  sessions Session[]
+  accounts Account[]
+  profile  StudentProfile?
+
+  enrolments         Enrolment[]         @relation("EnrolmentStudent")
+  enrolmentsChanged  Enrolment[]         @relation("EnrolmentChangedBy")
+  invitationsSent    Invitation[]        @relation("InvitationCreatedBy")
+  invitationAccepted Invitation?         @relation("InvitationUser")
+  batchesCreated     Batch[]             @relation("BatchCreatedBy")
+  assignmentsCreated Assignment[]        @relation("AssignmentCreatedBy")
+  assignmentTargets  AssignmentTarget[]
+  submissions        Submission[]        @relation("SubmissionStudent")
+  submissionsReview  Submission[]        @relation("SubmissionReviewer")
+  assessmentsCreated Assessment[]        @relation("AssessmentCreatedBy")
+  assessmentTargets  AssessmentTarget[]
+  attempts           Attempt[]
+  answersGraded      AttemptAnswer[]     @relation("AnswerGrader")
+  doubtsAsked        DoubtThread[]       @relation("DoubtStudent")
+  doubtsAssigned     DoubtThread[]       @relation("DoubtAssignee")
+  doubtMessages      DoubtMessage[]
+  codeDrafts         CodeDraft[]
+  codeRuns           CodeRun[]
+  workspaceProjects  WorkspaceProject[]
+  projectBriefs      ProjectBrief[]      @relation("BriefCreatedBy")
+  briefTargets       ProjectBriefTarget[]
+  projectSubmissions ProjectSubmission[] @relation("ProjectSubmissionStudent")
+  projectReviews     ProjectSubmission[] @relation("ProjectSubmissionReviewer")
+  classesTaught      ClassSession[]      @relation("ClassInstructor")
+  classesCreated     ClassSession[]      @relation("ClassCreatedBy")
+  attendance         Attendance[]        @relation("AttendanceStudent")
+  attendanceMarked   Attendance[]        @relation("AttendanceMarkedBy")
+  notifications      Notification[]
+  announcements      Announcement[]
+  files              FileObject[]
+  auditEvents        AuditEvent[]
+  followUpNotes      FollowUpNote[]      @relation("FollowUpStudent")
+  followUpAuthored   FollowUpNote[]      @relation("FollowUpAuthor")
+  feedbackReceived   TrainerFeedback[]   @relation("FeedbackStudent")
+  feedbackGiven      TrainerFeedback[]   @relation("FeedbackAuthor")
+  placementInterviews PlacementInterview[] @relation("InterviewStudent")
+  interviewsRecorded PlacementInterview[] @relation("InterviewRecordedBy")
+  placementReview    PlacementReview?    @relation("PlacementReviewStudent")
+  placementReviewsBy PlacementReview[]   @relation("PlacementReviewedBy")
+
+  @@index([role])
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime @db.Timestamptz(3)
+  token     String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime @db.Timestamptz(3)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([identifier])
+}
+
+/// Better Auth rate-limit counters (database storage so limits hold across instances).
+model RateLimit {
+  id          String @id
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+
+// ─────────────────────────────────────────────────────────────
+// Students, batches, invitations
+// ─────────────────────────────────────────────────────────────
+
+model StudentProfile {
+  userId         String   @id
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone          String?
+  graduationYear Int?
+  background     String?
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+}
+
+model Batch {
+  id          String    @id @default(cuid())
+  name        String
+  code        String    @unique
+  description String?
+  startDate   DateTime? @db.Timestamptz(3)
+  archivedAt  DateTime? @db.Timestamptz(3)
+  createdById String
+  createdBy   User      @relation("BatchCreatedBy", fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @db.Timestamptz(3)
+
+  enrolments        Enrolment[]
+  invitations       Invitation[]
+  assignmentTargets AssignmentTarget[]
+  assessmentTargets AssessmentTarget[]
+  briefTargets      ProjectBriefTarget[]
+  classes           ClassSession[]
+  doubts            DoubtThread[]
+  announcements     Announcement[]
+
+  @@index([archivedAt])
+}
+
+enum EnrolmentStatus {
+  ACTIVE
+  ENDED
+}
+
+model Enrolment {
+  id          String          @id @default(cuid())
+  studentId   String
+  student     User            @relation("EnrolmentStudent", fields: [studentId], references: [id])
+  batchId     String
+  batch       Batch           @relation(fields: [batchId], references: [id])
+  status      EnrolmentStatus @default(ACTIVE)
+  startDate   DateTime        @db.Timestamptz(3)
+  endDate     DateTime?       @db.Timestamptz(3)
+  endReason   String?
+  changedById String?
+  changedBy   User?           @relation("EnrolmentChangedBy", fields: [changedById], references: [id])
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime        @updatedAt @db.Timestamptz(3)
+
+  @@index([studentId, status])
+  @@index([batchId, status])
+}
+
+model Invitation {
+  id          String    @id @default(cuid())
+  email       String
+  name        String
+  role        Role      @default(STUDENT)
+  batchId     String?
+  batch       Batch?    @relation(fields: [batchId], references: [id])
+  /// Enrolment start date applied when the invitation is accepted.
+  startDate   DateTime? @db.Timestamptz(3)
+  /// SHA-256 of the invitation token; the raw token is only shown once to the admin.
+  tokenHash   String    @unique
+  expiresAt   DateTime  @db.Timestamptz(3)
+  acceptedAt  DateTime? @db.Timestamptz(3)
+  revokedAt   DateTime? @db.Timestamptz(3)
+  userId      String?   @unique
+  user        User?     @relation("InvitationUser", fields: [userId], references: [id])
+  createdById String
+  createdBy   User      @relation("InvitationCreatedBy", fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+
+  @@index([email])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Daily assignments
+// ─────────────────────────────────────────────────────────────
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+model Assignment {
+  id              String        @id @default(cuid())
+  title           String
+  instructions    String
+  topic           String
+  difficulty      Difficulty    @default(MEDIUM)
+  status          ContentStatus @default(DRAFT)
+  /// When the assignment becomes visible. Null while draft; equals publish time for immediate publishing.
+  publishAt       DateTime?     @db.Timestamptz(3)
+  dueAt           DateTime      @db.Timestamptz(3)
+  allowLate       Boolean       @default(false)
+  maxMarks        Int           @default(10)
+  /// Accepted response formats: TEXT, CODE, LINK, FILE
+  responseTypes   String[]
+  notifiedAt      DateTime?     @db.Timestamptz(3)
+  archivedAt      DateTime?     @db.Timestamptz(3)
+  createdById     String
+  createdBy       User          @relation("AssignmentCreatedBy", fields: [createdById], references: [id])
+  createdAt       DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime      @updatedAt @db.Timestamptz(3)
+
+  targets     AssignmentTarget[]
+  submissions Submission[]
+  files       FileObject[]
+  doubts      DoubtThread[]
+
+  @@index([status, publishAt])
+  @@index([dueAt])
+}
+
+/// An assignment targets whole batches and/or individual students (exactly one of batchId/studentId).
+model AssignmentTarget {
+  id           String     @id @default(cuid())
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  batchId      String?
+  batch        Batch?     @relation(fields: [batchId], references: [id])
+  studentId    String?
+  student      User?      @relation(fields: [studentId], references: [id])
+
+  @@unique([assignmentId, batchId])
+  @@unique([assignmentId, studentId])
+  @@index([batchId])
+  @@index([studentId])
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  RESUBMIT_REQUESTED
+  REVIEWED
+}
+
+model Submission {
+  id           String           @id @default(cuid())
+  assignmentId String
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id])
+  studentId    String
+  student      User             @relation("SubmissionStudent", fields: [studentId], references: [id])
+  status       SubmissionStatus @default(DRAFT)
+  textResponse String?
+  code         String?
+  codeLanguage String?
+  linkUrl      String?
+  submittedAt  DateTime?        @db.Timestamptz(3)
+  isLate       Boolean          @default(false)
+  /// Increments on every submit; used to show resubmission history.
+  revision     Int              @default(0)
+  marks        Float?
+  feedback     String?
+  reviewedById String?
+  reviewedBy   User?            @relation("SubmissionReviewer", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?        @db.Timestamptz(3)
+  createdAt    DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime         @updatedAt @db.Timestamptz(3)
+
+  files   FileObject[]
+  history SubmissionHistory[]
+
+  @@unique([assignmentId, studentId])
+  @@index([studentId, status])
+  @@index([assignmentId, status])
+}
+
+/// Immutable copy of each submitted revision.
+model SubmissionHistory {
+  id           String     @id @default(cuid())
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  revision     Int
+  content      Json
+  submittedAt  DateTime   @db.Timestamptz(3)
+  isLate       Boolean
+
+  @@unique([submissionId, revision])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Tests & assessments
+// ─────────────────────────────────────────────────────────────
+
+enum AssessmentKind {
+  PRACTICE
+  WEEKLY
+}
+
+enum ResultPolicy {
+  /// An admin releases results explicitly.
+  MANUAL
+  /// Results release automatically once the test closes and grading is complete.
+  AFTER_CLOSE
+  /// Each student's result releases as soon as their attempt is fully graded.
+  WHEN_GRADED
+}
+
+enum SolutionPolicy {
+  NEVER
+  WITH_RESULTS
+}
+
+enum HelpPolicy {
+  /// Students cannot raise doubts linked to this test while it is open.
+  NO_HELP_WHILE_OPEN
+  /// Private clarification questions only (never shared with the batch) while open.
+  PRIVATE_CLARIFICATION
+  /// Linked doubts allowed (still private while open).
+  ALLOWED
+}
+
+model Assessment {
+  id                  String         @id @default(cuid())
+  title               String
+  instructions        String
+  kind                AssessmentKind @default(PRACTICE)
+  status              ContentStatus  @default(DRAFT)
+  publishAt           DateTime?      @db.Timestamptz(3)
+  opensAt             DateTime       @db.Timestamptz(3)
+  closesAt            DateTime       @db.Timestamptz(3)
+  durationMinutes     Int
+  maxAttempts         Int            @default(1)
+  passPercent         Int?
+  randomizeQuestions  Boolean        @default(false)
+  resultPolicy        ResultPolicy   @default(MANUAL)
+  solutionPolicy      SolutionPolicy @default(NEVER)
+  helpPolicy          HelpPolicy     @default(NO_HELP_WHILE_OPEN)
+  resultsReleasedAt   DateTime?      @db.Timestamptz(3)
+  notifiedAt          DateTime?      @db.Timestamptz(3)
+  archivedAt          DateTime?      @db.Timestamptz(3)
+  createdById         String
+  createdBy           User           @relation("AssessmentCreatedBy", fields: [createdById], references: [id])
+  createdAt           DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime       @updatedAt @db.Timestamptz(3)
+
+  versions AssessmentVersion[]
+  targets  AssessmentTarget[]
+  attempts Attempt[]
+  doubts   DoubtThread[]
+
+  @@index([status, publishAt])
+  @@index([closesAt])
+}
+
+/// Questions belong to a version. A version is frozen (lockedAt) when published;
+/// attempts reference the exact version they were started with.
+model AssessmentVersion {
+  id           String     @id @default(cuid())
+  assessmentId String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  number       Int
+  lockedAt     DateTime?  @db.Timestamptz(3)
+  createdAt    DateTime   @default(now()) @db.Timestamptz(3)
+
+  questions Question[]
+  attempts  Attempt[]
+
+  @@unique([assessmentId, number])
+}
+
+model AssessmentTarget {
+  id           String     @id @default(cuid())
+  assessmentId String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  batchId      String?
+  batch        Batch?     @relation(fields: [batchId], references: [id])
+  studentId    String?
+  student      User?      @relation(fields: [studentId], references: [id])
+
+  @@unique([assessmentId, batchId])
+  @@unique([assessmentId, studentId])
+  @@index([batchId])
+  @@index([studentId])
+}
+
+enum QuestionType {
+  MCQ_SINGLE
+  MCQ_MULTI
+  SHORT_ANSWER
+  CODING
+}
+
+enum CodingScoring {
+  /// Full marks only when every grading case passes.
+  ALL_OR_NOTHING
+  /// Marks proportional to the weight of passed grading cases.
+  PROPORTIONAL
+}
+
+model Question {
+  id              String             @id @default(cuid())
+  versionId       String
+  version         AssessmentVersion  @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  order           Int
+  type            QuestionType
+  topic           String
+  prompt          String
+  marks           Float
+  /// MCQ options: [{ id, text }]
+  options         Json?
+  /// Secret: correct option ids. Never sent to students before solutions are released.
+  correctOptionIds String[]
+  /// Secret: model answer / marking guide for short answers and coding.
+  solution        String?
+  // Coding-specific fields
+  inputFormat     String?
+  outputFormat    String?
+  constraints     String?
+  /// { [languageKey]: starter code }
+  starterCode     Json?
+  /// Language keys accepted for this question (provider language ids as strings).
+  allowedLanguages String[]
+  timeLimitMs     Int?
+  memoryLimitKb   Int?
+  scoring         CodingScoring?
+
+  cases   CodingCase[]
+  answers AttemptAnswer[]
+
+  @@unique([versionId, order])
+}
+
+model CodingCase {
+  id             String     @id @default(cuid())
+  questionId     String
+  question       Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  order          Int
+  /// Sample cases are visible to students; hidden cases never leave the server.
+  isSample       Boolean    @default(false)
+  input          String
+  expectedOutput String
+  weight         Int        @default(1)
+
+  results CodeCaseResult[]
+
+  @@unique([questionId, order])
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  /// Finalised by the server at the deadline.
+  AUTO_SUBMITTED
+}
+
+enum AttemptGradingStatus {
+  NOT_STARTED
+  AWAITING_GRADING
+  PARTIALLY_GRADED
+  GRADED
+}
+
+model Attempt {
+  id            String               @id @default(cuid())
+  assessmentId  String
+  assessment    Assessment           @relation(fields: [assessmentId], references: [id])
+  versionId     String
+  version       AssessmentVersion    @relation(fields: [versionId], references: [id])
+  studentId     String
+  student       User                 @relation(fields: [studentId], references: [id])
+  number        Int
+  status        AttemptStatus        @default(IN_PROGRESS)
+  startedAt     DateTime             @default(now()) @db.Timestamptz(3)
+  /// min(test close time, start + duration). Authoritative server deadline.
+  deadlineAt    DateTime             @db.Timestamptz(3)
+  submittedAt   DateTime?            @db.Timestamptz(3)
+  /// Question ids in the order shown to this student.
+  questionOrder String[]
+  gradingStatus AttemptGradingStatus @default(NOT_STARTED)
+  score         Float?
+  maxScore      Float
+  updatedAt     DateTime             @updatedAt @db.Timestamptz(3)
+
+  answers AttemptAnswer[]
+
+  @@unique([assessmentId, studentId, number])
+  @@index([status, deadlineAt])
+  @@index([studentId])
+}
+
+enum AnswerGradeStatus {
+  PENDING
+  UNANSWERED
+  AUTO_GRADED
+  NEEDS_REVIEW
+  REVIEWED
+  /// The execution service failed; this is not an incorrect answer.
+  EXECUTION_ERROR
+}
+
+model AttemptAnswer {
+  id                String            @id @default(cuid())
+  attemptId         String
+  attempt           Attempt           @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          Question          @relation(fields: [questionId], references: [id])
+  selectedOptionIds String[]
+  textAnswer        String?
+  code              String?
+  languageKey       String?
+  /// Monotonic save counter acknowledged back to the client.
+  revision          Int               @default(0)
+  savedAt           DateTime?         @db.Timestamptz(3)
+  gradeStatus       AnswerGradeStatus @default(PENDING)
+  marksAwarded      Float?
+  feedback          String?
+  gradedById        String?
+  gradedBy          User?             @relation("AnswerGrader", fields: [gradedById], references: [id])
+  gradedAt          DateTime?         @db.Timestamptz(3)
+
+  caseResults CodeCaseResult[]
+  gradingJob  GradingJob?
+
+  @@unique([attemptId, questionId])
+  @@index([gradeStatus])
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+}
+
+/// One grading job per coding answer. Claimed with a conditional update so it is processed once.
+model GradingJob {
+  id         String        @id @default(cuid())
+  answerId   String        @unique
+  answer     AttemptAnswer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  status     JobStatus     @default(QUEUED)
+  tries      Int           @default(0)
+  lastError  String?
+  createdAt  DateTime      @default(now()) @db.Timestamptz(3)
+  startedAt  DateTime?     @db.Timestamptz(3)
+  finishedAt DateTime?     @db.Timestamptz(3)
+
+  @@index([status])
+}
+
+enum CaseOutcome {
+  PASSED
+  WRONG_ANSWER
+  COMPILE_ERROR
+  RUNTIME_ERROR
+  TIME_LIMIT
+  MEMORY_LIMIT
+  EXECUTION_ERROR
+}
+
+model CodeCaseResult {
+  id        String        @id @default(cuid())
+  answerId  String
+  answer    AttemptAnswer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  caseId    String
+  case      CodingCase    @relation(fields: [caseId], references: [id])
+  outcome   CaseOutcome
+  timeMs    Int?
+  memoryKb  Int?
+  /// Stored only for sample cases.
+  stdoutPreview String?
+  createdAt DateTime      @default(now()) @db.Timestamptz(3)
+
+  @@unique([answerId, caseId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Coding playground
+// ─────────────────────────────────────────────────────────────
+
+model CodeDraft {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  languageKey String
+  code        String
+  stdin       String   @default("")
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([userId, languageKey])
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  CANCELLED
+  /// The execution provider was unavailable or returned an internal error.
+  SERVICE_ERROR
+}
+
+enum RunPurpose {
+  PLAYGROUND
+  ASSESSMENT_PRACTICE
+}
+
+model CodeRun {
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose       RunPurpose @default(PLAYGROUND)
+  attemptId     String?
+  languageKey   String
+  languageLabel String
+  sourceCode    String
+  stdin         String     @default("")
+  status        RunStatus  @default(QUEUED)
+  /// Provider verdict text, e.g. "Accepted", "Time Limit Exceeded".
+  verdict       String?
+  stdout        String?
+  stderr        String?
+  compileOutput String?
+  exitCode      Int?
+  timeMs        Int?
+  memoryKb      Int?
+  providerToken String?
+  errorMessage  String?
+  createdAt     DateTime   @default(now()) @db.Timestamptz(3)
+  finishedAt    DateTime?  @db.Timestamptz(3)
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Doubts
+// ─────────────────────────────────────────────────────────────
+
+enum DoubtStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum DoubtVisibility {
+  PRIVATE
+  BATCH
+}
+
+model DoubtThread {
+  id              String          @id @default(cuid())
+  studentId       String
+  student         User            @relation("DoubtStudent", fields: [studentId], references: [id])
+  batchId         String?
+  batch           Batch?          @relation(fields: [batchId], references: [id])
+  title           String
+  topic           String
+  status          DoubtStatus     @default(OPEN)
+  visibility      DoubtVisibility @default(PRIVATE)
+  assignmentId    String?
+  assignment      Assignment?     @relation(fields: [assignmentId], references: [id])
+  assessmentId    String?
+  assessment      Assessment?     @relation(fields: [assessmentId], references: [id])
+  projectBriefId  String?
+  projectBrief    ProjectBrief?   @relation(fields: [projectBriefId], references: [id])
+  assignedToId    String?
+  assignedTo      User?           @relation("DoubtAssignee", fields: [assignedToId], references: [id])
+  firstResponseAt DateTime?       @db.Timestamptz(3)
+  resolvedAt      DateTime?       @db.Timestamptz(3)
+  lastActivityAt  DateTime        @default(now()) @db.Timestamptz(3)
+  createdAt       DateTime        @default(now()) @db.Timestamptz(3)
+
+  messages DoubtMessage[]
+
+  @@index([status, lastActivityAt])
+  @@index([studentId])
+  @@index([batchId, visibility])
+}
+
+model DoubtMessage {
+  id           String      @id @default(cuid())
+  threadId     String
+  thread       DoubtThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId     String
+  author       User        @relation(fields: [authorId], references: [id])
+  body         String
+  codeSnippet  String?
+  codeLanguage String?
+  createdAt    DateTime    @default(now()) @db.Timestamptz(3)
+
+  files FileObject[]
+
+  @@index([threadId, createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Projects & full-stack workspace
+// ─────────────────────────────────────────────────────────────
+
+model ProjectBrief {
+  id              String        @id @default(cuid())
+  title           String
+  description     String
+  starterTemplate String
+  status          ContentStatus @default(DRAFT)
+  publishAt       DateTime?     @db.Timestamptz(3)
+  dueAt           DateTime?     @db.Timestamptz(3)
+  maxMarks        Int           @default(100)
+  notifiedAt      DateTime?     @db.Timestamptz(3)
+  archivedAt      DateTime?     @db.Timestamptz(3)
+  createdById     String
+  createdBy       User          @relation("BriefCreatedBy", fields: [createdById], references: [id])
+  createdAt       DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime      @updatedAt @db.Timestamptz(3)
+
+  targets     ProjectBriefTarget[]
+  projects    WorkspaceProject[]
+  submissions ProjectSubmission[]
+  doubts      DoubtThread[]
+
+  @@index([status, publishAt])
+}
+
+model ProjectBriefTarget {
+  id        String       @id @default(cuid())
+  briefId   String
+  brief     ProjectBrief @relation(fields: [briefId], references: [id], onDelete: Cascade)
+  batchId   String?
+  batch     Batch?       @relation(fields: [batchId], references: [id])
+  studentId String?
+  student   User?        @relation(fields: [studentId], references: [id])
+
+  @@unique([briefId, batchId])
+  @@unique([briefId, studentId])
+}
+
+model WorkspaceProject {
+  id         String        @id @default(cuid())
+  ownerId    String
+  owner      User          @relation(fields: [ownerId], references: [id])
+  name       String
+  template   String
+  briefId    String?
+  brief      ProjectBrief? @relation(fields: [briefId], references: [id])
+  archivedAt DateTime?     @db.Timestamptz(3)
+  createdAt  DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime      @updatedAt @db.Timestamptz(3)
+
+  files       WorkspaceFile[]
+  submissions ProjectSubmission[]
+
+  @@index([ownerId])
+}
+
+model WorkspaceFile {
+  id        String           @id @default(cuid())
+  projectId String
+  project   WorkspaceProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  /// POSIX-style relative path, e.g. "src/App.jsx"
+  path      String
+  content   String
+  updatedAt DateTime         @updatedAt @db.Timestamptz(3)
+
+  @@unique([projectId, path])
+}
+
+enum ProjectSubmissionStatus {
+  SUBMITTED
+  RESUBMIT_REQUESTED
+  REVIEWED
+}
+
+/// A frozen snapshot of the project files at submission time.
+model ProjectSubmission {
+  id           String                  @id @default(cuid())
+  projectId    String
+  project      WorkspaceProject        @relation(fields: [projectId], references: [id])
+  briefId      String?
+  brief        ProjectBrief?           @relation(fields: [briefId], references: [id])
+  studentId    String
+  student      User                    @relation("ProjectSubmissionStudent", fields: [studentId], references: [id])
+  /// { [path]: content }
+  snapshot     Json
+  fileCount    Int
+  totalBytes   Int
+  note         String?
+  status       ProjectSubmissionStatus @default(SUBMITTED)
+  marks        Float?
+  feedback     String?
+  reviewedById String?
+  reviewedBy   User?                   @relation("ProjectSubmissionReviewer", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?               @db.Timestamptz(3)
+  submittedAt  DateTime                @default(now()) @db.Timestamptz(3)
+
+  @@index([studentId])
+  @@index([briefId, status])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Live classes & attendance
+// ─────────────────────────────────────────────────────────────
+
+model ClassSession {
+  id              String    @id @default(cuid())
+  batchId         String
+  batch           Batch     @relation(fields: [batchId], references: [id])
+  topic           String
+  instructorId    String
+  instructor      User      @relation("ClassInstructor", fields: [instructorId], references: [id])
+  startsAt        DateTime  @db.Timestamptz(3)
+  durationMinutes Int
+  meetingUrl      String
+  resources       String?
+  cancelledAt     DateTime? @db.Timestamptz(3)
+  createdById     String
+  createdBy       User      @relation("ClassCreatedBy", fields: [createdById], references: [id])
+  createdAt       DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime  @updatedAt @db.Timestamptz(3)
+
+  attendance Attendance[]
+
+  @@index([batchId, startsAt])
+}
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  ABSENT
+  EXCUSED
+}
+
+model Attendance {
+  id         String           @id @default(cuid())
+  sessionId  String
+  session    ClassSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  studentId  String
+  student    User             @relation("AttendanceStudent", fields: [studentId], references: [id])
+  status     AttendanceStatus
+  markedById String
+  markedBy   User             @relation("AttendanceMarkedBy", fields: [markedById], references: [id])
+  markedAt   DateTime         @default(now()) @db.Timestamptz(3)
+
+  @@unique([sessionId, studentId])
+  @@index([studentId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Feedback, notes, placement records
+// ─────────────────────────────────────────────────────────────
+
+/// Admin-only follow-up notes. Never shown to students.
+model FollowUpNote {
+  id        String   @id @default(cuid())
+  studentId String
+  student   User     @relation("FollowUpStudent", fields: [studentId], references: [id])
+  authorId  String
+  author    User     @relation("FollowUpAuthor", fields: [authorId], references: [id])
+  body      String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([studentId, createdAt])
+}
+
+/// Trainer feedback visible to the student.
+model TrainerFeedback {
+  id        String   @id @default(cuid())
+  studentId String
+  student   User     @relation("FeedbackStudent", fields: [studentId], references: [id])
+  authorId  String
+  author    User     @relation("FeedbackAuthor", fields: [authorId], references: [id])
+  body      String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([studentId, createdAt])
+}
+
+enum InterviewOutcome {
+  PENDING
+  SELECTED
+  NOT_SELECTED
+  WITHDRAWN
+}
+
+model PlacementInterview {
+  id              String           @id @default(cuid())
+  studentId       String
+  student         User             @relation("InterviewStudent", fields: [studentId], references: [id])
+  company         String
+  scheduledAt     DateTime         @db.Timestamptz(3)
+  attended        Boolean?
+  outcome         InterviewOutcome @default(PENDING)
+  companyFeedback String?
+  recordedById    String
+  recordedBy      User             @relation("InterviewRecordedBy", fields: [recordedById], references: [id])
+  createdAt       DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
+
+  @@index([studentId])
+}
+
+enum PlacementReviewStatus {
+  NOT_REVIEWED
+  ELIGIBLE
+  NOT_ELIGIBLE
+  ON_HOLD
+}
+
+enum RefundReviewStatus {
+  NOT_APPLICABLE
+  UNDER_REVIEW
+  MUTUALLY_AGREED
+  NOT_AGREED
+}
+
+/// Human decision record for the placement commitment. The system never decides eligibility or refunds.
+model PlacementReview {
+  id           String                @id @default(cuid())
+  studentId    String                @unique
+  student      User                  @relation("PlacementReviewStudent", fields: [studentId], references: [id])
+  status       PlacementReviewStatus @default(NOT_REVIEWED)
+  refundStatus RefundReviewStatus    @default(NOT_APPLICABLE)
+  notes        String?
+  reviewedById String?
+  reviewedBy   User?                 @relation("PlacementReviewedBy", fields: [reviewedById], references: [id])
+  reviewedAt   DateTime?             @db.Timestamptz(3)
+  updatedAt    DateTime              @updatedAt @db.Timestamptz(3)
+}
+
+// ─────────────────────────────────────────────────────────────
+// Notifications, announcements, files, audit
+// ─────────────────────────────────────────────────────────────
+
+enum NotificationType {
+  ASSIGNMENT_PUBLISHED
+  TEST_PUBLISHED
+  PROJECT_PUBLISHED
+  DEADLINE_SOON
+  DOUBT_REPLY
+  DOUBT_STATUS
+  RESULT_RELEASED
+  FEEDBACK
+  ANNOUNCEMENT
+  CLASS_SCHEDULED
+  NEW_DOUBT
+  SUBMISSION_RECEIVED
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String?
+  link      String?
+  /// Prevents duplicate notifications for the same event.
+  dedupeKey String
+  readAt    DateTime?        @db.Timestamptz(3)
+  createdAt DateTime         @default(now()) @db.Timestamptz(3)
+
+  @@unique([userId, dedupeKey])
+  @@index([userId, readAt, createdAt])
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  /// Null means all active students.
+  batchId     String?
+  batch       Batch?    @relation(fields: [batchId], references: [id])
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  publishedAt DateTime  @default(now()) @db.Timestamptz(3)
+  archivedAt  DateTime? @db.Timestamptz(3)
+
+  @@index([batchId, publishedAt])
+}
+
+enum FilePurpose {
+  ASSIGNMENT_RESOURCE
+  SUBMISSION
+  DOUBT_ATTACHMENT
+}
+
+/// Private file. Downloads go through a permission-checked route; storage keys are never exposed.
+model FileObject {
+  id             String        @id @default(cuid())
+  ownerId        String
+  owner          User          @relation(fields: [ownerId], references: [id])
+  purpose        FilePurpose
+  storageKey     String        @unique
+  filename       String
+  mimeType       String
+  sizeBytes      Int
+  sha256         String
+  assignmentId   String?
+  assignment     Assignment?   @relation(fields: [assignmentId], references: [id])
+  submissionId   String?
+  submission     Submission?   @relation(fields: [submissionId], references: [id])
+  doubtMessageId String?
+  doubtMessage   DoubtMessage? @relation(fields: [doubtMessageId], references: [id])
+  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
+
+  @@index([assignmentId])
+  @@index([submissionId])
+  @@index([doubtMessageId])
+}
+
+model AuditEvent {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id])
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+  @@index([createdAt])
+}
