@@ -85,19 +85,30 @@ export function mapStatus(id: number): ExecResult["outcome"] | "PENDING" {
   return "SERVICE_ERROR"; // 13 Internal Error, 14 Exec Format Error, unknown
 }
 
+export type Judge0Config = {
+  JUDGE0_URL: string;
+  JUDGE0_RAPIDAPI_KEY: string;
+  JUDGE0_RAPIDAPI_HOST: string;
+  JUDGE0_AUTH_TOKEN: string;
+  JUDGE0_LANGUAGE_IDS: string;
+  RUN_MAX_OUTPUT_BYTES: number;
+};
+
 export class Judge0Provider implements ExecutionProvider {
   readonly name = "Judge0";
   private langCache: { at: number; langs: ExecLanguage[] } | null = null;
 
-  constructor(private readonly fetchImpl: typeof fetch = fetch) {}
+  constructor(
+    private readonly fetchImpl: typeof fetch = fetch,
+    private readonly cfg: () => Judge0Config = env,
+  ) {}
 
   configured() {
-    const e = env();
-    return Boolean(e.JUDGE0_URL);
+    return Boolean(this.cfg().JUDGE0_URL);
   }
 
   private headers(): Record<string, string> {
-    const e = env();
+    const e = this.cfg();
     const h: Record<string, string> = { "Content-Type": "application/json" };
     if (e.JUDGE0_RAPIDAPI_KEY) {
       h["X-RapidAPI-Key"] = e.JUDGE0_RAPIDAPI_KEY;
@@ -109,7 +120,7 @@ export class Judge0Provider implements ExecutionProvider {
 
   private async request<T>(path: string, init: RequestInit = {}): Promise<T> {
     if (!this.configured()) throw new ExecutionUnavailableError("Code execution is not configured yet. Ask an admin to connect the Judge0 runner.");
-    const url = env().JUDGE0_URL.replace(/\/$/, "") + path;
+    const url = this.cfg().JUDGE0_URL.replace(/\/$/, "") + path;
     let res: Response;
     try {
       res = await this.fetchImpl(url, { ...init, headers: { ...this.headers(), ...(init.headers ?? {}) }, signal: AbortSignal.timeout(15000) });
@@ -127,7 +138,7 @@ export class Judge0Provider implements ExecutionProvider {
   async languages(): Promise<ExecLanguage[]> {
     if (this.langCache && Date.now() - this.langCache.at < 10 * 60_000) return this.langCache.langs;
     const all = await this.request<{ id: number; name: string; is_archived?: boolean }[]>("/languages");
-    const langs = selectLanguages(all.filter((l) => !l.is_archived), env().JUDGE0_LANGUAGE_IDS);
+    const langs = selectLanguages(all.filter((l) => !l.is_archived), this.cfg().JUDGE0_LANGUAGE_IDS);
     this.langCache = { at: Date.now(), langs };
     return langs;
   }
@@ -168,7 +179,7 @@ export class Judge0Provider implements ExecutionProvider {
     const statusId = r.status?.id ?? 13;
     const mapped = mapStatus(statusId);
     if (mapped === "PENDING") return { done: false };
-    const max = env().RUN_MAX_OUTPUT_BYTES;
+    const max = this.cfg().RUN_MAX_OUTPUT_BYTES;
     const memoryKb = r.memory ?? null;
     return {
       done: true,
