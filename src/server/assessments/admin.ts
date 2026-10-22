@@ -117,14 +117,18 @@ export const questionSchema = z
         ctx.addIssue({ code: "custom", message: "Single-answer questions have exactly one correct option", path: ["correctOptionIds"] });
       }
     }
-    if (q.type === "CODING") {
-      if (q.allowedLanguages.length === 0) ctx.addIssue({ code: "custom", message: "Allow at least one language", path: ["allowedLanguages"] });
-      if (!q.cases.some((c) => !c.isSample)) ctx.addIssue({ code: "custom", message: "Add at least one hidden grading case", path: ["cases"] });
-      if (q.cases.reduce((s, c) => s + c.weight, 0) <= 0) ctx.addIssue({ code: "custom", message: "Case weights must add up to more than 0", path: ["cases"] });
-    }
   });
 
 export type QuestionInput = z.infer<typeof questionSchema>;
+
+/** Extra requirements checked when a version is published (drafts may be incomplete). */
+export function publishProblems(q: Pick<QuestionInput, "type" | "allowedLanguages"> & { cases: { isSample: boolean; weight: number }[] }): string | null {
+  if (q.type !== "CODING") return null;
+  if (q.allowedLanguages.length === 0) return "allow at least one language";
+  if (!q.cases.some((c) => !c.isSample)) return "add at least one hidden grading case";
+  if (q.cases.reduce((s, c) => s + c.weight, 0) <= 0) return "case weights must add up to more than 0";
+  return null;
+}
 
 export const newOptionId = () => randomBytes(4).toString("hex");
 
@@ -203,6 +207,8 @@ async function assertVersionReady(versionId: string) {
       cases: q.cases,
     });
     if (!parsed.success) throw invalid(`Question ${q.order} is incomplete: ${parsed.error.issues[0]?.message}`);
+    const problem = publishProblems(q);
+    if (problem) throw invalid(`Question ${q.order} is incomplete: ${problem}.`);
   }
 }
 

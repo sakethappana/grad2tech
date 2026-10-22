@@ -347,12 +347,26 @@ export function toCsv(rows: (string | number | null | undefined)[][]): string {
   return rows.map((r) => r.map(esc).join(",")).join("\r\n") + "\r\n";
 }
 
-export async function studentSummaryCsv(batchId: string | null, now = new Date()) {
+export async function studentSummaries(batchId: string | null, now = new Date()) {
   const students = await prisma.user.findMany({
     where: { role: "STUDENT", ...(batchId ? { enrolments: { some: { batchId } } } : {}) },
     select: { id: true, name: true, email: true, suspendedAt: true, enrolments: { where: { status: "ACTIVE" }, select: { batch: { select: { code: true } } } } },
     orderBy: { name: "asc" },
   });
+  const out = [];
+  for (const s of students) {
+    const [a, t, att, openDoubts] = await Promise.all([
+      studentAssignmentMetrics(s.id, now),
+      studentTestMetrics(s.id, "admin", now),
+      attendanceMetrics(s.id, now),
+      prisma.doubtThread.count({ where: { studentId: s.id, status: { not: "RESOLVED" } } }),
+    ]);
+    out.push({ student: s, assignments: a.summary, tests: t.summary, attendance: { denominator: att.denominator, rate: att.rate }, openDoubts });
+  }
+  return out;
+}
+
+export async function studentSummaryCsv(batchId: string | null, now = new Date()) {
   const rows: (string | number | null)[][] = [
     [
       "Name",
@@ -368,39 +382,33 @@ export async function studentSummaryCsv(batchId: string | null, now = new Date()
       "Reviewed assignment marks %",
       "Graded tests",
       "Average test %",
-      "Failed tests",
+      "Tests below pass mark",
       "Tests with runner errors",
       "Attendance denominator",
       "Attendance rate %",
       "Open doubts",
     ],
   ];
-  for (const s of students) {
-    const [a, t, att, openDoubts] = await Promise.all([
-      studentAssignmentMetrics(s.id, now),
-      studentTestMetrics(s.id, "admin", now),
-      attendanceMetrics(s.id, now),
-      prisma.doubtThread.count({ where: { studentId: s.id, status: { not: "RESOLVED" } } }),
-    ]);
+  for (const r of await studentSummaries(batchId, now)) {
     rows.push([
-      s.name,
-      s.email,
-      s.enrolments.map((e) => e.batch.code).join(" "),
-      s.suspendedAt ? "Suspended" : "Active",
-      a.summary.due,
-      a.summary.onTime,
-      a.summary.late,
-      a.summary.missing,
-      a.summary.awaitingReview,
-      a.summary.onTimeRate,
-      a.summary.marksPct,
-      t.summary.gradedCount,
-      t.summary.averagePercent,
-      t.summary.failed,
-      t.summary.executionErrors,
-      att.denominator,
-      att.rate,
-      openDoubts,
+      r.student.name,
+      r.student.email,
+      r.student.enrolments.map((e) => e.batch.code).join(" "),
+      r.student.suspendedAt ? "Suspended" : "Active",
+      r.assignments.due,
+      r.assignments.onTime,
+      r.assignments.late,
+      r.assignments.missing,
+      r.assignments.awaitingReview,
+      r.assignments.onTimeRate,
+      r.assignments.marksPct,
+      r.tests.gradedCount,
+      r.tests.averagePercent,
+      r.tests.failed,
+      r.tests.executionErrors,
+      r.attendance.denominator,
+      r.attendance.rate,
+      r.openDoubts,
     ]);
   }
   return toCsv(rows);
