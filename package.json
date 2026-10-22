@@ -57,6 +57,7 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "postinstall": "prisma generate && node scripts/copy-monaco.mjs",
-    "start:prod": "prisma migrate deploy && next start"
+    "start:prod": "prisma migrate deploy && next start",
+    "seed:demo-tests": "tsx prisma/seed-demo-tests.ts"
   }
 }
