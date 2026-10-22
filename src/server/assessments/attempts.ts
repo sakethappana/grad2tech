@@ -144,7 +144,7 @@ export async function saveAnswer(studentId: string, attemptId: string, questionI
     if (!still) throw new DeadlinePassedError();
     return tx.attemptAnswer.upsert({
       where: { attemptId_questionId: { attemptId, questionId } },
-      create: { attemptId, questionId, ...(data as Prisma.AttemptAnswerUncheckedCreateInput), revision: 1, savedAt: now },
+      create: { ...(data as Prisma.AttemptAnswerUncheckedCreateInput), attemptId, questionId, revision: 1, savedAt: now },
       update: { ...data, revision: { increment: 1 }, savedAt: now },
       select: { revision: true, savedAt: true },
     });

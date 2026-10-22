@@ -24,7 +24,7 @@ export function isAppError(e: unknown): e is AppError {
 }
 
 /** Result shape returned by Server Actions to forms. */
-export type ActionResult<T = undefined> =
+export type ActionResult<T = unknown> =
   | { ok: true; message?: string; data?: T }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 

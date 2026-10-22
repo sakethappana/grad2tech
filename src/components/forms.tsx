@@ -9,7 +9,9 @@ export type ActionResult<T = unknown> =
   | { ok: true; message?: string; data?: T & { redirect?: string } }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
-type Action = (prev: ActionResult | null, fd: FormData) => Promise<ActionResult>;
+// Server Actions return ActionResult with action-specific data; the form only reads ok/message/error/redirect.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Action = (prev: any, fd: FormData) => Promise<ActionResult<any>>;
 
 const ErrorsContext = createContext<Record<string, string>>({});
 

@@ -9,7 +9,7 @@ export function emailConfigured(): boolean {
   return Boolean(env().SMTP_URL);
 }
 
-let transport: nodemailer.Transporter | null = null;
+let transport: ReturnType<typeof nodemailer.createTransport> | null = null;
 
 export async function sendEmail(to: string, subject: string, text: string): Promise<boolean> {
   if (!emailConfigured()) return false;
