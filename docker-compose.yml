@@ -1,0 +1,52 @@
+# Single-server deployment: PostgreSQL + web app + background worker.
+# Code execution (Judge0) runs elsewhere (RapidAPI or a separate isolated host) — never in this stack.
+#
+#   cp .env.example .env    # fill in secrets; set DATABASE_URL to the db service below
+#   docker compose up -d --build
+#   docker compose exec web npm run setup:admin -- --email you@example.com --name "Your Name"
+
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: grad2tech
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: grad2tech
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U grad2tech"]
+      interval: 10s
+      retries: 5
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://grad2tech:${POSTGRES_PASSWORD}@db:5432/grad2tech
+      STORAGE_LOCAL_DIR: /data/storage
+    volumes:
+      - uploads:/data/storage
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://grad2tech:${POSTGRES_PASSWORD}@db:5432/grad2tech
+    command: ["npm", "run", "worker"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  uploads:

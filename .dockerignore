@@ -1,0 +1,12 @@
+node_modules
+.next
+.data
+storage
+.env
+.env.*
+!.env.example
+coverage
+playwright-report
+test-results
+public/monaco
+.git
